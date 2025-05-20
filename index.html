@@ -1,0 +1,99 @@
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+
+const flavors = [
+  {
+    id: "original",
+    name: "Original Gurih",
+    image: "/images/original.png",
+    description: "Keripik singkong rasa original dengan cita rasa gurih renyah khas KripKing.",
+    ingredients: ["Singkong pilihan", "Minyak nabati", "Garam"]
+  },
+  {
+    id: "pedes-gila",
+    name: "Pedes Gila🔥",
+    image: "/images/pedes-gila.png",
+    description: "Ledakan rasa pedas yang bikin nagih! Favorit pecinta tantangan pedas.",
+    ingredients: ["Singkong pilihan", "Minyak nabati", "Cabai bubuk ekstra", "Garam"]
+  },
+  {
+    id: "keju-leleh",
+    name: "Keju Leleh🧀",
+    image: "/images/keju-leleh.png",
+    description: "Sensasi keju lumer di mulut dipadu kerenyahan keripik singkong.",
+    ingredients: ["Singkong pilihan", "Minyak nabati", "Bubuk keju", "Garam"]
+  }
+];
+
+export default function KripKingPage() {
+  const [selected, setSelected] = useState("original");
+
+  const selectedFlavor = flavors.find((f) => f.id === selected);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-orange-100 to-white p-6">
+      <motion.h1
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-4xl font-bold text-center text-orange-700 mb-6"
+      >
+        👑 KripKing — Raja-nya Keripik Singkong
+      </motion.h1>
+
+      <Tabs defaultValue={selected} onValueChange={(val) => setSelected(val)}>
+        <TabsList className="flex justify-center gap-4 mb-8">
+          {flavors.map((f) => (
+            <TabsTrigger
+              key={f.id}
+              value={f.id}
+              className="text-orange-600 data-[state=active]:bg-orange-200 data-[state=active]:text-orange-800"
+            >
+              {f.name}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        {flavors.map((f) => (
+          <TabsContent key={f.id} value={f.id}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
+            >
+              <img
+                src={f.image}
+                alt={f.name}
+                className="rounded-2xl shadow-lg w-full"
+              />
+              <Card className="bg-white shadow-xl p-4">
+                <CardContent>
+                  <h2 className="text-2xl font-bold text-orange-700 mb-4">
+                    {f.name}
+                  </h2>
+                  <p className="text-gray-700 mb-4">{f.description}</p>
+                  <h3 className="text-lg font-semibold text-orange-600 mb-2">Komposisi:</h3>
+                  <ul className="list-disc list-inside text-gray-600 space-y-1">
+                    {f.ingredients.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </TabsContent>
+        ))}
+      </Tabs>
+
+      <div className="text-center mt-10">
+        <Button className="bg-orange-500 hover:bg-orange-600 text-white rounded-2xl px-6 py-2 shadow-md">
+          Beli Sekarang
+        </Button>
+      </div>
+    </div>
+  );
+}
